@@ -1,0 +1,6 @@
+id,email,password,nick_name,birthday,gender,kakao_id
+1,yerang@yerang.com,1234,yerang,1989-04-25,male,14222
+2,myungjun@myungjun.com,1234,myungjun,1989-04-25,male,41422
+3,hyunjeong@hyunjeong.com,1234,hyunjeong,1989-04-25,female,13222
+4,jaehyun@jaehyun.com,1234,jaehyun,1989-04-25,male,77886
+5,jongmin@jongmin.com,1234,jongmin,1989-04-25,male,99221
