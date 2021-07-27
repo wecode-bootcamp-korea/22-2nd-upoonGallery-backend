@@ -26,7 +26,5 @@ def login_required(func):
             return JsonResponse({'message': 'USER_DOES_NOT_EXISTS'}, status=401)
         except KeyError:
             return JsonResponse({'message': 'KEY_ERROR'}, status=400)
-        except Exception as error:
-            return JsonResponse({'message': error}, status=400)
 
     return wrapper
