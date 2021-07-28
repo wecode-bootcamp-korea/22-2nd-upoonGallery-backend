@@ -230,3 +230,111 @@ class ArtsTest(TestCase):
         {
             "message": "VALUE_ERROR"
         })
+
+class ArtTest(TestCase):
+    def setUp(self):
+        User.objects.create(
+            id = 1,
+            email = "jm@gmail.com",
+            password = 1234,
+            nick_name = "서정민",
+            birthday = "2000-01-12",
+            gender = "female",
+            kakao_id = "1112"
+        )
+
+        Artist.objects.create(
+            id = 1,
+            name = "서정민"
+        )
+
+        Size.objects.create(
+            id = 1,
+            name = 1
+        )
+        
+        Size.objects.create(
+            id = 2,
+            name = 2,
+        )
+
+        Shape.objects.create(
+            id = 1,
+            name = "세로형"
+        )
+
+        Art.objects.create(
+            id = 1,
+            title = "주지훈",
+            image_url = "https://topclass.chosun.com/news_img/2004/2004_056.jpg",
+            description = "주지훈보다는 아이유지 by 재현",
+            price = "300000.00",
+            artist_id = 1,
+            size_id = 1,
+            shape_id= 1,
+        )
+        
+        Color.objects.create(
+            id = 1,
+            name = "레드"
+        )
+
+        Theme.objects.create(
+            id = 1,
+            name = "인물"
+        )
+
+        ArtColor.objects.create(
+            # id = id,
+            art_id = 1,
+            color_id = 1
+        )
+        
+        ArtTheme.objects.update_or_create(
+            id = 1,
+            art_id = 1,
+            theme_id = 1
+        )
+
+    def tearDown(self):
+        ArtTheme.objects.all().delete()
+        ArtColor.objects.all().delete()
+        Theme.objects.all().delete()
+        Color.objects.all().delete()
+        Art.objects.all().delete()
+        Shape.objects.all().delete()
+        Size.objects.all().delete()
+        Artist.objects.all().delete()
+        User.objects.all().delete()
+
+    def test_art_get_view(self):
+        client = Client()
+        response = client.get('/arts/1')
+
+        self.assertEqual(response.status_code,200)
+        
+        self.assertEqual(response.json(),
+        {
+        'art_information': 
+                {
+                    'id': 1, 
+                    'title': '주지훈', 
+                    'price': '300000.00', 
+                    'size': 1, 
+                    'artist_name': '서정민', 
+                    'description': '주지훈보다는 아이유지 by 재현', 
+                    'image_urls': ['https://topclass.chosun.com/news_img/2004/2004_056.jpg']
+                }
+            }
+        )
+    
+    def test_art_get_view_fail(self):
+        client = Client()
+        response = client.get('/arts/100')
+        
+        self.assertEqual(response.status_code, 404)
+
+        self.assertEqual(response.json(),
+        {
+            "message": "ART_NOT_FOUND"
+        })
