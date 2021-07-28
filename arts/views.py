@@ -27,6 +27,8 @@ class ArtsView(View):
                 'price-ascend'    : 'price'
             }
 
+            print(sort_dict['id'])
+
             q = Q()
 
             if artist_name:
@@ -52,7 +54,7 @@ class ArtsView(View):
 
             results = [
                 {
-                'art_id'           : art.id,
+                'art_id'       : art.id,
                 'title'        : art.title,
                 'image_url'    : art.image_url,
                 'artist_name'  : art.artist.name,
@@ -69,3 +71,25 @@ class ArtsView(View):
         
         except ValueError:
             return JsonResponse({"message" : "VALUE_ERROR"} , status = 400)
+
+from arts.models      import Art
+
+class ArtView(View):
+    def get(self,request,art_id):
+
+        if not Art.objects.filter(id = art_id).exists():
+            return JsonResponse({'message': 'ART_NOT_FOUND'}, status=404)
+
+        art  = Art.objects.get(id = art_id)
+        arts = art.artist.art_set.all()
+
+        art_information = {
+            "id"            : art.id,
+            "title"         : art.title,
+            "price"         : art.price,
+            "size"          : art.size.name,
+            "artist_name"   : art.artist.name, 
+            'description'   : art.description,
+            "image_urls"    : [art.image_url for art in arts[:3]],
+        }
+        return JsonResponse({'art_information': art_information}, status=200)
