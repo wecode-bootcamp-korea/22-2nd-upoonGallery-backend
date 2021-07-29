@@ -19,7 +19,6 @@ class ArtsView(View):
             offset           = int(request.GET.get('offset', 1)) 
             limit            = int(request.GET.get('limit', Art.objects.count()))
 
-
             sort_dict = { 
                 'id'              : 'id',
                 'size-ascend'     : 'size_id', 
@@ -69,3 +68,24 @@ class ArtsView(View):
         
         except ValueError:
             return JsonResponse({"message" : "VALUE_ERROR"} , status = 400)
+            
+class ArtView(View):
+    def get(self,request,art_id):
+
+        if not Art.objects.filter(id = art_id).exists():
+            return JsonResponse({'message': 'ART_NOT_FOUND'}, status=404)
+
+        art          = Art.objects.get(id = art_id)
+        related_arts = art.artist.art_set.all().exclude(id = art.id)
+
+        art_information = {
+            "id"            : art.id,
+            'artist_id'     : art.artist.id,
+            "title"         : art.title,
+            "price"         : art.price,
+            "size"          : art.size.name,
+            "artist_name"   : art.artist.name, 
+            'description'   : art.description,
+            "image_urls"    : [art.image_url] +[art.image_url for art in related_arts][:2]
+        }
+        return JsonResponse({'art_information': art_information}, status=200)
