@@ -9,7 +9,7 @@
    -  프론트엔드 : 이종민, 이재현
    -  백엔드 : 최현정, 최명준, 김예랑
 ### 데모 영상
-<a href=“https://youtu.be/OOkNGPRC4F0”>웃픈갤러리</a>
+<a href=“https://youtu.be/OOkNGPRC4F0”>https://youtu.be/OOkNGPRC4F0</a>
 <!-- <br> -->
 ## 적용 기술 및 구현 기능
 ### 적용 기술
